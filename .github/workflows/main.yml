@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -20,7 +22,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and test with Maven
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=willennn -Dsonar.organization=willennn -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./backend/pom.xml
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=willennn -Dsonar.organization=willennn -Dsonar.host.url=https://sonarcloud.io -Dsonar.token=${{ secrets.SONAR_TOKEN }} --file ./backend/pom.xml
 
   build-and-push-docker-image:
     needs: test-backend
