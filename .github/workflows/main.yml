@@ -20,7 +20,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and test with Maven
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=willennn -Dsonar.organization=willenn -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./backend/pom.xml
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=willennn -Dsonar.organization=willennn -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=${{ secrets.SONAR_TOKEN }} --file ./backend/pom.xml
 
   build-and-push-docker-image:
     needs: test-backend
