@@ -20,4 +20,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and test with Maven
-        run: mvn clean verify --file ./tp1/backend/simple-api/pom.xml
+        run: mvn clean verify --file ./backend/simple-api/pom.xml
