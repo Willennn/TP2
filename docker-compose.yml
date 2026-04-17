@@ -1,0 +1,40 @@
+services:
+  backend:
+    build: ./backend          # Construit l'image depuis le dossier backend
+    networks:
+      - app-network           # Connecté au réseau commun
+    depends_on:
+      - database              # Démarre après la base de données
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/db  # URL de connexion à la BDD
+      - SPRING_DATASOURCE_USERNAME=usr                            # Utilisateur BDD
+      - SPRING_DATASOURCE_PASSWORD=pwd                            # Mot de passe BDD
+    restart: unless-stopped   # Redémarre automatiquement en cas de crash
+
+  database:
+    build: ./Database         # Construit l'image depuis le dossier Database
+    networks:
+      - app-network           # Connecté au réseau commun
+    environment:
+      - POSTGRES_DB=db        # Nom de la base de données
+      - POSTGRES_USER=usr     # Utilisateur PostgreSQL
+      - POSTGRES_PASSWORD=pwd # Mot de passe PostgreSQL
+    volumes:
+      - db-data:/var/lib/postgresql/data  # Persiste les données même si le container est supprimé
+    restart: unless-stopped   # Redémarre automatiquement en cas de crash
+
+  httpd:
+    build: ./HTTP-server      # Construit l'image depuis le dossier HTTP-server
+    ports:
+      - "80:80"               # Expose le port 80 sur la machine hôte
+    networks:
+      - app-network           # Connecté au réseau commun
+    depends_on:
+      - backend               # Démarre après le backend
+    restart: unless-stopped   # Redémarre automatiquement en cas de crash
+
+networks:
+  app-network:                # Réseau commun permettant aux containers de communiquer par nom
+
+volumes:
+  db-data:                    # Volume pour persister les données PostgreSQL
